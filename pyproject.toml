@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-tenant-domains"
-version = "0.1.0"
+version = "0.1.1"
 description = "Shared-schema multi-tenancy for Django with automatic query filtering and Postgres row-level security."
 readme = "README.md"
 license = "BSD-3-Clause"

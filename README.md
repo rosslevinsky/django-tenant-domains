@@ -3,7 +3,9 @@
 Shared-schema multi-tenancy for Django. All tenants share one set of tables, queries filter by tenant
 automatically, and Postgres row-level security enforces the separation underneath.
 
-Version 0.1.0, in beta. The API may still change before 1.0.
+In beta. Before 1.0, a new middle version number (0.2.0) can break your code. The
+[changelog](https://github.com/rosslevinsky/django-tenant-domains/blob/main/CHANGELOG.md) says what
+changed in each release.
 
 - **Automatic filtering:** `Model.objects` only sees the current tenant, and raises an error when no
   tenant is set.
@@ -20,7 +22,8 @@ Version 0.1.0, in beta. The API may still change before 1.0.
   installed.
 
 It supports Django 5.2 on Python 3.11 to 3.14, Django 6.0 on Python 3.12 to 3.14, and Django 6.1 on
-Python 3.12 to 3.15. Use Postgres in production. SQLite gets the filter but no row-level security.
+Python 3.12 to 3.15. Use Postgres 15 or newer in production. SQLite gets the filter but no row-level
+security.
 
 ## Install
 

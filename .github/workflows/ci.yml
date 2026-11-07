@@ -16,19 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # Every supported Django and Python pair. A private fork, whose minutes are billed, runs only
+      # the oldest and the newest pair.
       matrix: &pairs
-        pair:
-          - 5.2-py3.11
-          - 5.2-py3.12
-          - 5.2-py3.13
-          - 5.2-py3.14
-          - 6.0-py3.12
-          - 6.0-py3.13
-          - 6.0-py3.14
-          - 6.1-py3.12
-          - 6.1-py3.13
-          - 6.1-py3.14
-          - 6.1-py3.15
+        pair: ${{ fromJSON(github.event.repository.private && '["5.2-py3.11","6.1-py3.15"]' || '["5.2-py3.11","5.2-py3.12","5.2-py3.13","5.2-py3.14","6.0-py3.12","6.0-py3.13","6.0-py3.14","6.1-py3.12","6.1-py3.13","6.1-py3.14","6.1-py3.15"]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -65,6 +56,38 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
       - run: uvx nox -s "tests(${{ matrix.pair }})"
+
+  # The oldest supported Postgres, with the oldest Django and Python pair. A private fork, whose
+  # minutes are billed, skips it.
+  postgres-oldest:
+    name: postgres 15 5.2-py3.11
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 30
+    env:
+      DTD_TEST_DB: postgres
+      DTD_DB_PORT: "5432"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Create test roles
+        run: psql -v ON_ERROR_STOP=1 -f docker/init-roles.sql
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+      - run: uvx nox -s "tests(5.2-py3.11)"
 
   # One version, checked against the checksum its project publishes, so a new gitleaks can't
   # change this result or reach the runner unnoticed.

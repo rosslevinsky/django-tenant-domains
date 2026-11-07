@@ -7,8 +7,8 @@ pip install "django-tenant-domains @ git+https://github.com/rosslevinsky/django-
 ```
 
 It supports Django 5.2 on Python 3.11 to 3.14, Django 6.0 on Python 3.12 to 3.14, and Django 6.1 on
-Python 3.12 to 3.15. Use Postgres in production. SQLite works for development, with the ORM filter
-only and no row-level security.
+Python 3.12 to 3.15. Use Postgres 15 or newer in production. SQLite works for development, with the
+ORM filter only and no row-level security.
 
 ## Settings
 
