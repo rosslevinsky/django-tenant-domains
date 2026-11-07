@@ -1,0 +1,7 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Activate your workspace{% endblock %}
+{% block content %}
+{% if error %}<h1>This link can't be used</h1><p class="error">{{ error }}</p>
+{% else %}<h1>Activate {{ signup.tenant_name }}</h1>
+<form method="post">{% csrf_token %}<p><button>Create workspace</button></p></form>{% endif %}
+{% endblock %}

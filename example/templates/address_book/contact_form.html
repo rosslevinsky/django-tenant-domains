@@ -1,0 +1,9 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post">{% csrf_token %}
+{% for field in form %}<p>{{ field.label_tag }}{{ field }}</p>{% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}{% endfor %}
+<p><button>Save</button></p></form>
+<p><a href="{% url 'contacts' tenant.slug %}">Back to the address book</a></p>
+{% endblock %}

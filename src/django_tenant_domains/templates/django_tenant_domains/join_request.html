@@ -1,0 +1,14 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Join {{ tenant.name }}{% endblock %}
+{% block content %}
+<h1>Join {{ tenant.name }}</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+{% if member %}
+<p>You're already a member of this workspace.</p>
+{% elif sent %}
+<p>Your request has been sent. An administrator will review it.</p>
+{% else %}
+<p>You aren't a member of this workspace. You can ask to join it.</p>
+<form method="post" action="{{ join_url }}">{% csrf_token %}<button>Ask to join</button></form>
+{% endif %}
+{% endblock %}

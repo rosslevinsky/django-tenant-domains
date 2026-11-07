@@ -1,0 +1,16 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Join requests{% endblock %}
+{% block content %}
+<h1>Join requests for {{ tenant.name }}</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+{% if can_view %}
+<ul>
+{% for item in join_requests %}
+<li>{{ item.user }}
+  <form method="post" action="{% url 'tenant_domains:decide_join_request' tenant.slug item.pk 'approve' %}">{% csrf_token %}<button>Approve</button></form>
+  <form method="post" action="{% url 'tenant_domains:decide_join_request' tenant.slug item.pk 'decline' %}">{% csrf_token %}<button>Decline</button></form>
+</li>
+{% empty %}<li>No requests are waiting.</li>{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

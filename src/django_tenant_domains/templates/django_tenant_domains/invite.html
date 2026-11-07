@@ -1,0 +1,8 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Invite someone{% endblock %}
+{% block content %}
+<h1>Invite someone to {{ tenant.name }}</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+{% if invitation_url %}<p>Send them this link:</p><p>{{ invitation_url }}</p>{% endif %}
+<form method="post">{% csrf_token %}{{ form.as_p }}<button>Create invitation</button></form>
+{% endblock %}

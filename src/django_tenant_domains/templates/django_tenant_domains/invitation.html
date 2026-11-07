@@ -1,0 +1,12 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Invitation{% endblock %}
+{% block content %}
+{% if invalid %}
+<h1>This invitation can't be used</h1>
+<p>It may have expired, or been sent to a different email address.</p>
+{% else %}
+<h1>Join {{ invitation.tenant.name }}</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+<form method="post">{% csrf_token %}<button>Accept invitation</button></form>
+{% endif %}
+{% endblock %}

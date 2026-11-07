@@ -1,0 +1,9 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Your workspaces{% endblock %}
+{% block content %}
+<h1>Your workspaces</h1>
+<ul>
+{% for item in user_tenants %}<li><a href="{{ prefix }}t/{{ item.slug }}/">{{ item.name }}</a></li>
+{% empty %}<li>You aren't a member of any workspace yet.</li>{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}Delete {{ contact.name }}{% endblock %}
+{% block content %}
+<h1>Delete {{ contact.name }}?</h1>
+<form method="post">{% csrf_token %}<p><button>Delete</button></p></form>
+<p><a href="{% url 'contacts' tenant.slug %}">Back to the address book</a></p>
+{% endblock %}

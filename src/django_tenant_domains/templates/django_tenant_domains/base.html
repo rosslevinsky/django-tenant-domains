@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %}</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; padding: 2rem 1rem; color: #1a1a1a; background: #fff; }
+  main { max-width: 32rem; margin: 0 auto; overflow-wrap: anywhere; }
+  h1 { font-size: 1.5rem; line-height: 1.25; }
+  :root { color-scheme: light dark; }
+  input, select, textarea { font: inherit; width: 100%; box-sizing: border-box; padding: .5rem; }
+  button { font: inherit; padding: .5rem 1rem; min-height: 2.75rem; }
+  li { margin: .5rem 0; }
+  li form { display: inline-block; margin: .25rem .25rem 0 0; }
+  .error { color: #a4161a; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #eee; background: #161616; }
+    .error { color: #ff8a8a; }
+    a { color: #8ab4f8; }
+  }
+</style>
+</head>
+<body><main>{% block content %}{% endblock %}</main></body>
+</html>

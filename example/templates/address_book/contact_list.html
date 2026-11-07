@@ -1,0 +1,10 @@
+{% extends "django_tenant_domains/base.html" %}
+{% block title %}{{ tenant.name }} address book{% endblock %}
+{% block content %}
+<h1>{{ tenant.name }} address book</h1>
+<p>You are {{ user.username }}{% if membership %}, {{ membership.role.name }}{% else %}, working as staff{% endif %}. <a href="{% url 'tenant_domains:switcher' %}">Switch workspace</a></p>
+<form method="get"><label for="q">Search</label><input id="q" name="q" value="{{ query }}"><p><button>Search</button></p></form>
+{% if can_add %}<p><a href="{% url 'contact_add' tenant.slug %}">Add a contact</a></p>{% endif %}
+<ul>{% for contact in contacts %}<li><strong>{{ contact.name }}</strong>{% if contact.email %}<br>{{ contact.email }}{% endif %}{% if contact.phone %}<br>{{ contact.phone }}{% endif %}{% if can_change %}<br><a href="{% url 'contact_edit' tenant.slug contact.pk %}">Edit</a>{% endif %}{% if can_delete %}<br><a href="{% url 'contact_delete' tenant.slug contact.pk %}">Delete</a>{% endif %}</li>{% empty %}<li>No contacts found.</li>{% endfor %}</ul>
+{% if can_invite %}<p><a href="{% url 'tenant_domains:invite' tenant.slug %}">Invite someone</a> · <a href="{% url 'tenant_domains:join_requests' tenant.slug %}">Join requests</a></p>{% endif %}
+{% endblock %}

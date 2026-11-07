@@ -1,0 +1,85 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-tenant-domains"
+version = "0.1.0"
+description = "Shared-schema multi-tenancy for Django with automatic query filtering and Postgres row-level security."
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "Ross Levinsky" }]
+dependencies = ["Django>=5.2"]
+keywords = ["django", "multi-tenancy", "tenant", "row-level security", "postgres"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+]
+
+[project.urls]
+Homepage = "https://github.com/rosslevinsky/django-tenant-domains"
+Documentation = "https://github.com/rosslevinsky/django-tenant-domains/blob/main/docs/install.md"
+Issues = "https://github.com/rosslevinsky/django-tenant-domains/issues"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "hypothesis",
+    "nox[uv]",
+    "psycopg[binary]>=3.1",
+    "pytest",
+    "pytest-django",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_tenant_domains"]
+
+[tool.hatch.build.targets.sdist]
+# What a user needs to install the package and run its tests, and nothing else.
+only-include = [
+    "src",
+    "tests",
+    "docs",
+    "example",
+    "docker",
+    "LICENSE",
+    "README.md",
+    "pyproject.toml",
+    "noxfile.py",
+    "compose.yaml",
+]
+exclude = ["/example/db.sqlite3"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = ["postgres: needs Postgres; skipped on SQLite"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Django's Meta options and admin attributes are class-level lists by design.
+ignore = ["RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/settings_swapped.py" = ["F403", "F405"]
+"tests/settings_two_dbs.py" = ["F403"]
+"tests/settings_fresh.py" = ["F403"]
