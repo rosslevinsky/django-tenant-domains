@@ -5,6 +5,10 @@ import os
 SECRET_KEY = "test-only"
 USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# Django 6.1 warns when MAILERS is missing, and Django 2028 will require it. Earlier versions
+# ignore it. The test runner swaps every mailer for one that keeps messages in memory.
+MAILERS = {"default": {"BACKEND": "django.core.mail.backends.locmem.EmailBackend"}}
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.contenttypes",

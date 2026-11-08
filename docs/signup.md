@@ -16,7 +16,25 @@ urlpatterns = [
 ]
 ```
 
-Run `migrate`, and set up Django's email settings, since the page sends an activation link.
+Run `migrate`, and set up email, since the page sends an activation link through Django's default
+mailer. On Django 6.1 and later, that is the `default` entry in `MAILERS`; Django 2028 will not send
+email without one. On Django 5.2 and 6.0, it is `EMAIL_BACKEND` and the other `EMAIL_` settings.
+Django 6.1 refuses to start with both, so a project that supports several versions picks by version:
+
+```python
+import django
+
+if django.VERSION >= (6, 1):
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": {"host": "smtp.example.com"},
+        }
+    }
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "smtp.example.com"
+```
 
 ## How it works
 

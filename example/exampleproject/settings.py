@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import django
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "example-only"
@@ -12,8 +14,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 ROOT_URLCONF = "exampleproject.urls"
 STATIC_URL = "static/"
 LOGIN_REDIRECT_URL = "/tenants/"
-# Prints activation emails in the terminal running the server.
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# Prints activation emails in the terminal running the server. Django 6.1 replaced EMAIL_BACKEND
+# with MAILERS, and refuses to start with both.
+CONSOLE_EMAIL = "django.core.mail.backends.console.EmailBackend"
+if django.VERSION >= (6, 1):
+    MAILERS = {"default": {"BACKEND": CONSOLE_EMAIL}}
+else:
+    EMAIL_BACKEND = CONSOLE_EMAIL
 
 INSTALLED_APPS = [
     "django.contrib.admin",

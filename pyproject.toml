@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-tenant-domains"
-version = "0.1.1"
+version = "0.1.2"
 description = "Shared-schema multi-tenancy for Django with automatic query filtering and Postgres row-level security."
 readme = "README.md"
 license = "BSD-3-Clause"
@@ -42,6 +42,7 @@ dev = [
     "psycopg[binary]>=3.1",
     "pytest",
     "pytest-django",
+    "pytest-xdist",
     "ruff",
 ]
 
@@ -68,7 +69,8 @@ exclude = ["/example/db.sqlite3"]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 pythonpath = ["."]
 testpaths = ["tests"]
-addopts = "--strict-markers"
+# One worker per CPU. Pass `-n 0` to run in a single process, for example under a debugger.
+addopts = "--strict-markers -n auto"
 markers = ["postgres: needs Postgres; skipped on SQLite"]
 
 [tool.ruff]

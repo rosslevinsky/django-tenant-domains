@@ -18,6 +18,30 @@ def pytest_collection_modifyitems(config, items):
         item.add_marker(skip)
 
 
+def pytest_configure(config):
+    if POSTGRES:
+        _flush_each_database_once()
+
+
+def _flush_each_database_once():
+    """Empty the shared test database once after a test that commits, not once per login.
+
+    `migrator` is a second login to the database `default` uses. Flushing it as well truncated
+    every table twice, and its post-migrate signal rebuilt every row-level security policy each
+    time, though a truncate leaves policies alone. That was over half the Postgres suite's time.
+    `migrator` is not a test mirror, because a mirror would also take `default`'s login.
+    """
+    from django.test import TransactionTestCase
+
+    names = TransactionTestCase._databases_names.__func__
+
+    def without_migrator(cls, include_mirrors=True):
+        aliases = names(cls, include_mirrors)
+        return aliases if include_mirrors else [alias for alias in aliases if alias != "migrator"]
+
+    TransactionTestCase._databases_names = classmethod(without_migrator)
+
+
 def _use_login(alias, user):
     from django.db import connections
 

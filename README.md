@@ -149,7 +149,7 @@ lists what each user should see.
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e '.[dev]'
-pytest                                   # SQLite
+pytest                                   # SQLite, one worker per CPU
 docker compose up -d --wait
 DTD_TEST_DB=postgres pytest              # Postgres on host port 55432
 nox                                      # every supported Django and Python pair
